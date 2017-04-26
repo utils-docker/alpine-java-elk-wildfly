@@ -1,4 +1,4 @@
-FROM fabioluciano/alpine-java-base
+FROM fabioluciano/alpine-base-java
 MAINTAINER Fábio Luciano <fabioluciano@php.net>
 LABEL Description="Alpine Java Wildfly"
 
@@ -16,9 +16,12 @@ ENV wildfly_target_dir ${wildfly_target_dir:-"/opt/wildfly/"}
 
 ENV wildfly_url "http://download.jboss.org/wildfly/${wildfly_version}/wildfly-${wildfly_version}.tar.gz"
 
+ARG elastico_logstash
+ENV elastico_logstash ${elastico_logstash:-"http://logstash.devops"}
+
 ################
 
-RUN apk --update --no-cache add tar curl openssh
+RUN apk --update --no-cache add openssh
 
 WORKDIR /opt
 
@@ -30,12 +33,16 @@ RUN printf "${wildfly_password}\n${wildfly_password}" | adduser ${wildfly_userna
   && printf "\n\n" | ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key \
   && echo "AllowUsers ${wildfly_username}" >> /etc/ssh/sshd_config
 
+## Configure Wildfly
 RUN curl -L ${wildfly_url} > wildfly.tar.gz \
   && directory=$(tar tfz wildfly.tar.gz --exclude '*/*') \
   && tar -xzf wildfly.tar.gz && rm wildfly.tar.gz \
   && mv $directory wildfly \
-  && chown wildfly:wildfly /opt/wildfly -R
+  && chown ${wildfly_username}:${wildfly_username} /opt/wildfly -R
 
 COPY files/supervisor/* /etc/supervisor.d/
+
+COPY files/beats/filebeat.yml /opt/monitor/filebeat/
+RUN chmod go-w /opt/monitor/filebeat/filebeat.yml
 
 EXPOSE 8080/tcp 8443/tcp 9990/tcp
