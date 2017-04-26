@@ -42,7 +42,8 @@ RUN curl -L ${wildfly_url} > wildfly.tar.gz \
 
 COPY files/supervisor/* /etc/supervisor.d/
 
-COPY files/beats/filebeat.yml /opt/monitor/filebeat/
-RUN chmod go-w /opt/monitor/filebeat/filebeat.yml
+COPY files/beats/*.yml /tmp/
+RUN cat /tmp/filebeat.yml >> /opt/monitor/filebeat/filebeat.yml
+RUN cat /tmp/heartbeat.yml >> /opt/monitor/heartbeat/heartbeat.yml
 
 EXPOSE 8080/tcp 8443/tcp 9990/tcp

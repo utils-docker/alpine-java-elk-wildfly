@@ -1,12 +1,5 @@
-#------------------------------ Log prospector --------------------------------
 filebeat.prospectors:
 - input_type: log
   paths:
     - /var/log/*.log
     - /opt/wildfly/standalone/log/*.log
-
-#----------------------------- Logstash output ---------------------------------
-output.logstash:
-  enabled: true
-  hosts: ["172.17.0.3:5044"]
-logging.to_files: false
