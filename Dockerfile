@@ -28,7 +28,7 @@ WORKDIR /opt
 ## Configure SSH
 RUN printf "${wildfly_password}\n${wildfly_password}" | adduser ${wildfly_username} \
   && printf "\n\n" | ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key \
-  && printf "\n\n" | ssh-keygen -t dsa -fgit a /etc/ssh/ssh_host_dsa_key \
+  && printf "\n\n" | ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key \
   && printf "\n\n" | ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key \
   && printf "\n\n" | ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key \
   && echo "AllowUsers ${wildfly_username}" >> /etc/ssh/sshd_config
