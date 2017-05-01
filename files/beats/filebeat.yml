@@ -1,5 +1,4 @@
 filebeat.prospectors:
 - input_type: log
   paths:
-    - /var/log/*.log
     - /opt/wildfly/standalone/log/*.log

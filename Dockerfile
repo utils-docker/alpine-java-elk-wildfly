@@ -16,9 +16,6 @@ ENV wildfly_target_dir ${wildfly_target_dir:-"/opt/wildfly/"}
 
 ENV wildfly_url "http://download.jboss.org/wildfly/${wildfly_version}/wildfly-${wildfly_version}.tar.gz"
 
-ARG elastico_logstash
-ENV elastico_logstash ${elastico_logstash:-"http://logstash.devops"}
-
 ################
 
 RUN apk --update --no-cache add openssh
