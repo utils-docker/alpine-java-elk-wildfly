@@ -37,7 +37,8 @@ RUN curl -L ${wildfly_url} > wildfly.tar.gz \
   && directory=$(tar tfz wildfly.tar.gz --exclude '*/*') \
   && tar -xzf wildfly.tar.gz && rm wildfly.tar.gz \
   && mv $directory wildfly \
-  && chown ${wildfly_username}:${wildfly_username} /opt/wildfly -R
+  && chown ${wildfly_username}:${wildfly_username} /opt/wildfly -R \
+  && mkdir -p /var/log/sshd/ /var/log/wildfly/
 
 COPY files/supervisor/* /etc/supervisor.d/
 
